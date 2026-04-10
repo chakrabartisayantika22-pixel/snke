@@ -9,20 +9,38 @@
       background: #111;
       color: white;
     }
+
     canvas {
       background: black;
       margin-top: 20px;
       border: 2px solid white;
     }
+
+    button {
+      font-size: 20px;
+      padding: 10px;
+      margin: 5px;
+      border-radius: 10px;
+      border: none;
+    }
   </style>
 </head>
+
 <body>
 
 <h1>🐍 Snake Game</h1>
-<p>Use arrow keys to play</p>
+<p>Use arrow keys or buttons to play</p>
 <p id="score">Score: 0</p>
 
 <canvas id="game" width="400" height="400"></canvas>
+
+<!-- Mobile Controls -->
+<div>
+  <button onclick="setDirection('LEFT')">⬅️</button>
+  <button onclick="setDirection('UP')">⬆️</button>
+  <button onclick="setDirection('DOWN')">⬇️</button>
+  <button onclick="setDirection('RIGHT')">➡️</button>
+</div>
 
 <script>
 const canvas = document.getElementById("game");
@@ -31,21 +49,32 @@ const ctx = canvas.getContext("2d");
 let snake = [{x: 200, y: 200}];
 let dx = 20;
 let dy = 0;
+
 let apple = {
   x: Math.floor(Math.random() * 20) * 20,
   y: Math.floor(Math.random() * 20) * 20
 };
+
 let score = 0;
 
 document.addEventListener("keydown", changeDirection);
 
+// Keyboard controls
 function changeDirection(event) {
   const key = event.keyCode;
 
-  if (key === 37 && dx === 0) { dx = -20; dy = 0; } // left
-  if (key === 38 && dy === 0) { dx = 0; dy = -20; } // up
-  if (key === 39 && dx === 0) { dx = 20; dy = 0; }  // right
-  if (key === 40 && dy === 0) { dx = 0; dy = 20; }  // down
+  if (key === 37 && dx === 0) { dx = -20; dy = 0; }
+  if (key === 38 && dy === 0) { dx = 0; dy = -20; }
+  if (key === 39 && dx === 0) { dx = 20; dy = 0; }
+  if (key === 40 && dy === 0) { dx = 0; dy = 20; }
+}
+
+// Mobile button controls
+function setDirection(dir) {
+  if (dir === 'LEFT' && dx === 0) { dx = -20; dy = 0; }
+  if (dir === 'RIGHT' && dx === 0) { dx = 20; dy = 0; }
+  if (dir === 'UP' && dy === 0) { dx = 0; dy = -20; }
+  if (dir === 'DOWN' && dy === 0) { dx = 0; dy = 20; }
 }
 
 function gameLoop() {
@@ -96,13 +125,13 @@ function drawApple() {
 function checkGameOver() {
   const head = snake[0];
 
-  // wall collision
+  // Wall collision
   if (head.x < 0 || head.y < 0 || head.x >= 400 || head.y >= 400) {
     alert("Game Over!");
     location.reload();
   }
 
-  // self collision
+  // Self collision
   for (let i = 1; i < snake.length; i++) {
     if (head.x === snake[i].x && head.y === snake[i].y) {
       alert("Game Over!");
