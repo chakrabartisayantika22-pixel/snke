@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>Snake Game</title>
+
   <style>
     body {
       text-align: center;
@@ -16,12 +17,23 @@
       border: 2px solid white;
     }
 
-    button {
-      font-size: 20px;
-      padding: 10px;
+    /* Controls layout */
+    .controls {
+      margin-top: 20px;
+    }
+
+    .controls button {
+      width: 60px;
+      height: 60px;
+      font-size: 24px;
       margin: 5px;
       border-radius: 10px;
       border: none;
+    }
+
+    .controls div {
+      display: flex;
+      justify-content: center;
     }
   </style>
 </head>
@@ -29,17 +41,20 @@
 <body>
 
 <h1>🐍 Snake Game</h1>
-<p>Use arrow keys or buttons to play</p>
+<p>Use arrow keys or buttons</p>
 <p id="score">Score: 0</p>
 
 <canvas id="game" width="400" height="400"></canvas>
 
-<!-- Mobile Controls -->
-<div>
-  <button onclick="setDirection('LEFT')">⬅️</button>
+<!-- Square Controls -->
+<div class="controls">
   <button onclick="setDirection('UP')">⬆️</button>
-  <button onclick="setDirection('DOWN')">⬇️</button>
-  <button onclick="setDirection('RIGHT')">➡️</button>
+
+  <div>
+    <button onclick="setDirection('LEFT')">⬅️</button>
+    <button onclick="setDirection('DOWN')">⬇️</button>
+    <button onclick="setDirection('RIGHT')">➡️</button>
+  </div>
 </div>
 
 <script>
@@ -57,9 +72,9 @@ let apple = {
 
 let score = 0;
 
+// Keyboard controls
 document.addEventListener("keydown", changeDirection);
 
-// Keyboard controls
 function changeDirection(event) {
   const key = event.keyCode;
 
@@ -69,7 +84,7 @@ function changeDirection(event) {
   if (key === 40 && dy === 0) { dx = 0; dy = 20; }
 }
 
-// Mobile button controls
+// Mobile buttons
 function setDirection(dir) {
   if (dir === 'LEFT' && dx === 0) { dx = -20; dy = 0; }
   if (dir === 'RIGHT' && dx === 0) { dx = 20; dy = 0; }
@@ -85,7 +100,7 @@ function gameLoop() {
     drawSnake();
     checkGameOver();
     gameLoop();
-  }, 100);
+  }, 180); // slower speed
 }
 
 function clearCanvas() {
